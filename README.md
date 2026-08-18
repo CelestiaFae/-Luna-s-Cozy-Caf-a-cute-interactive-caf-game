@@ -1,0 +1,2902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🌸 Luna's Cozy Café</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    user-select:none;
+}
+
+body{
+    font-family:"Trebuchet MS",Arial,sans-serif;
+    background:#f8dfdc;
+    color:#654c4c;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+button{
+    border:0;
+    cursor:pointer;
+    font-family:inherit;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* =========================
+   MAIN BACKGROUND
+========================= */
+
+.background{
+    position:fixed;
+    inset:0;
+    z-index:-10;
+    background:
+        radial-gradient(circle at 20% 20%,#fff8e9 0 8%,transparent 9%),
+        linear-gradient(135deg,#f8dfe2,#ead7c9);
+}
+
+.background:before,
+.background:after{
+    content:"";
+    position:absolute;
+    font-size:70px;
+    opacity:.25;
+}
+
+.background:before{
+    content:"☁️";
+    top:10%;
+    left:8%;
+}
+
+.background:after{
+    content:"🌸";
+    right:8%;
+    bottom:12%;
+}
+
+/* =========================
+   START SCREEN
+========================= */
+
+#startScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.titleCard{
+    width:min(650px,95%);
+    padding:45px 30px;
+    text-align:center;
+    background:#fffaf5ee;
+    border:5px solid #e6a9b8;
+    border-radius:40px;
+    box-shadow:0 25px 70px #69464b35;
+}
+
+.logoBig{
+    font-size:80px;
+    margin-bottom:10px;
+    animation:bob 3s infinite ease-in-out;
+}
+
+@keyframes bob{
+    50%{transform:translateY(-8px)}
+}
+
+.titleCard h1{
+    font-size:42px;
+    color:#b75f7c;
+}
+
+.titleCard p{
+    margin:12px 0 25px;
+    color:#876868;
+}
+
+.startButtons{
+    display:grid;
+    gap:12px;
+}
+
+.menuButton{
+    padding:15px;
+    border-radius:25px;
+    background:#e995b0;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    box-shadow:0 7px 15px #a95b7130;
+    transition:.2s;
+}
+
+.menuButton:hover{
+    transform:translateY(-3px) scale(1.02);
+    background:#dc7f9e;
+}
+
+.smallButton{
+    background:#f3d4d8;
+    color:#9d5b6c;
+}
+
+/* =========================
+   GAME
+========================= */
+
+#game{
+    min-height:100vh;
+}
+
+.topbar{
+    width:min(1200px,95%);
+    margin:auto;
+    padding:14px 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.brand{
+    background:#fffaf6;
+    padding:11px 18px;
+    border-radius:25px;
+    color:#ad5977;
+    font-weight:bold;
+    box-shadow:0 5px 20px #0001;
+}
+
+.stats{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+}
+
+.stat{
+    background:#fffaf6;
+    padding:9px 13px;
+    border-radius:20px;
+    font-weight:bold;
+    box-shadow:0 5px 15px #0001;
+}
+
+#levelBar{
+    width:min(1200px,95%);
+    height:10px;
+    margin:0 auto 10px;
+    background:#e9cfd3;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+#xpBar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#dc83a5,#f1c576);
+    transition:.5s;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.nav{
+    width:min(1200px,95%);
+    margin:10px auto;
+    display:flex;
+    gap:7px;
+    overflow-x:auto;
+    padding-bottom:5px;
+}
+
+.nav button{
+    white-space:nowrap;
+    padding:10px 15px;
+    border-radius:20px;
+    background:#fff8f2;
+    color:#a55772;
+    font-weight:bold;
+    box-shadow:0 4px 12px #0001;
+}
+
+.nav button:hover{
+    background:#e995b0;
+    color:white;
+}
+
+/* =========================
+   ROOMS
+========================= */
+
+.room{
+    width:min(1200px,95%);
+    margin:10px auto 100px;
+    min-height:650px;
+    background:#fff7ed;
+    border:7px solid #b97960;
+    border-radius:35px;
+    overflow:hidden;
+    box-shadow:0 25px 60px #0002;
+}
+
+.roomHeader{
+    padding:17px;
+    text-align:center;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #e9a1b7 0 55px,
+            #f5c7d4 55px 110px
+        );
+    color:white;
+    font-size:23px;
+    font-weight:bold;
+    text-shadow:0 2px 4px #80475a;
+}
+
+/* =========================
+   CAFE FLOOR
+========================= */
+
+.cafeFloor{
+    height:520px;
+    position:relative;
+    overflow:hidden;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #bd805f 0 75px,
+            #c98c68 75px 150px
+        );
+}
+
+.wall{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:140px;
+    background:#f5dfcf;
+    border-bottom:10px solid #9d624c;
+}
+
+.window{
+    position:absolute;
+    top:22px;
+    left:50%;
+    transform:translateX(-50%);
+    width:300px;
+    height:100px;
+    border:8px solid #9a644f;
+    border-radius:18px;
+    background:linear-gradient(#bce5ec,#f4f7ed);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:40px;
+}
+
+.wallPlant{
+    position:absolute;
+    top:55px;
+    font-size:45px;
+}
+
+.wallPlant.left{left:7%}
+.wallPlant.right{right:7%}
+
+.clock{
+    position:absolute;
+    top:20px;
+    left:20px;
+    font-size:45px;
+}
+
+.painting{
+    position:absolute;
+    top:25px;
+    right:25px;
+    width:95px;
+    height:75px;
+    background:#f1b2c4;
+    border:7px solid #875440;
+    border-radius:8px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:35px;
+}
+
+/* =========================
+   CARPET
+========================= */
+
+.carpet{
+    position:absolute;
+    left:50%;
+    bottom:20px;
+    transform:translateX(-50%);
+    width:570px;
+    height:260px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle,#f6c5d3 3px,transparent 4px),
+        #d88fa9;
+    background-size:27px 27px;
+    border:12px solid #b96f8a;
+    box-shadow:inset 0 0 0 7px #efb6c7;
+}
+
+/* =========================
+   FURNITURE
+========================= */
+
+.table{
+    position:absolute;
+    width:145px;
+    height:90px;
+    border-radius:50%;
+    background:#9b614b;
+    border:8px solid #704636;
+    z-index:10;
+    box-shadow:0 12px 15px #0003;
+}
+
+.table:after{
+    content:"";
+    position:absolute;
+    width:20px;
+    height:70px;
+    background:#704432;
+    left:50%;
+    bottom:-65px;
+    transform:translateX(-50%);
+}
+
+.tableContent{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:27px;
+}
+
+.t1{
+    left:9%;
+    bottom:140px;
+}
+
+.t2{
+    right:9%;
+    bottom:140px;
+}
+
+.t3{
+    left:50%;
+    bottom:220px;
+    transform:translateX(-50%) scale(.85);
+}
+
+.chair{
+    position:absolute;
+    width:65px;
+    height:68px;
+    background:#dda0b1;
+    border:6px solid #a66577;
+    border-radius:25px 25px 12px 12px;
+    z-index:8;
+}
+
+.chair:after{
+    content:"";
+    position:absolute;
+    width:9px;
+    height:35px;
+    background:#75483d;
+    left:50%;
+    bottom:-34px;
+    transform:translateX(-50%);
+}
+
+.c1{left:3%;bottom:150px}
+.c2{left:24%;bottom:135px}
+.c3{right:3%;bottom:150px}
+.c4{right:24%;bottom:135px}
+.c5{left:41%;bottom:185px}
+.c6{right:41%;bottom:185px}
+
+/* =========================
+   SOFA
+========================= */
+
+.sofa{
+    position:absolute;
+    left:50%;
+    top:180px;
+    transform:translateX(-50%);
+    width:310px;
+    height:85px;
+    background:#e3a5b9;
+    border:7px solid #a96579;
+    border-radius:35px 35px 15px 15px;
+    z-index:7;
+}
+
+.sofa:before{
+    content:"";
+    position:absolute;
+    left:12px;
+    right:12px;
+    top:-52px;
+    height:60px;
+    background:#e3a5b9;
+    border:7px solid #a96579;
+    border-radius:35px 35px 10px 10px;
+}
+
+/* =========================
+   COUNTER
+========================= */
+
+.counter{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:5px;
+    width:360px;
+    height:75px;
+    background:#a86c50;
+    border:8px solid #704433;
+    border-radius:20px 20px 0 0;
+    z-index:30;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    font-size:34px;
+}
+
+/* =========================
+   CHARACTERS WITHOUT
+   CHARACTER SPRITES
+========================= */
+
+.customer{
+    position:absolute;
+    z-index:50;
+    font-size:52px;
+    text-align:center;
+    animation:breathe 3s infinite ease-in-out;
+}
+
+.customer small{
+    display:block;
+    background:#fffaf5;
+    padding:4px 8px;
+    border-radius:15px;
+    font-size:10px;
+    box-shadow:0 4px 10px #0002;
+}
+
+.customer.one{
+    left:11%;
+    bottom:170px;
+}
+
+.customer.two{
+    right:11%;
+    bottom:170px;
+}
+
+.customer.three{
+    left:50%;
+    top:290px;
+    transform:translateX(-50%);
+}
+
+@keyframes breathe{
+    50%{transform:translateY(-5px)}
+}
+
+/* =========================
+   PETS
+========================= */
+
+.pet{
+    position:absolute;
+    z-index:80;
+    font-size:48px;
+    cursor:pointer;
+    animation:petMove 7s infinite ease-in-out;
+}
+
+.pet:hover{
+    animation-play-state:paused;
+    transform:scale(1.2);
+}
+
+.pet.cat{
+    left:32%;
+    bottom:45px;
+}
+
+.pet.dog{
+    right:30%;
+    bottom:50px;
+    animation-delay:2s;
+}
+
+.pet.bunny{
+    left:65%;
+    bottom:45px;
+    animation-delay:4s;
+}
+
+@keyframes petMove{
+    0%,100%{translate:0}
+    30%{translate:35px -3px}
+    60%{translate:-15px 0}
+}
+
+/* =========================
+   PLANTS
+========================= */
+
+.plant{
+    position:absolute;
+    z-index:25;
+    font-size:55px;
+}
+
+.plant.one{
+    left:3%;
+    top:190px;
+}
+
+.plant.two{
+    right:3%;
+    top:190px;
+}
+
+/* =========================
+   ROOM CARDS
+========================= */
+
+.roomGrid{
+    padding:30px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.roomCard{
+    background:#fff;
+    padding:25px 15px;
+    text-align:center;
+    border-radius:25px;
+    box-shadow:0 8px 20px #0001;
+    transition:.2s;
+}
+
+.roomCard:hover{
+    transform:translateY(-5px);
+}
+
+.roomIcon{
+    font-size:55px;
+}
+
+.roomCard h3{
+    color:#ad5c78;
+    margin:8px;
+}
+
+.roomCard p{
+    font-size:13px;
+    margin-bottom:12px;
+}
+
+.buyButton{
+    background:#df86a5;
+    color:white;
+    padding:10px 18px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+/* =========================
+   DECORATION SHOP
+========================= */
+
+.shopGrid{
+    padding:30px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.shopCard{
+    background:white;
+    padding:18px;
+    border-radius:22px;
+    text-align:center;
+    box-shadow:0 7px 17px #0001;
+}
+
+.shopCard .icon{
+    font-size:45px;
+}
+
+.shopCard h3{
+    color:#ad5c78;
+    margin:7px;
+}
+
+.shopCard p{
+    font-size:12px;
+    margin-bottom:8px;
+}
+
+/* =========================
+   PET PAGE
+========================= */
+
+.petGrid{
+    padding:30px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.petCard{
+    background:white;
+    padding:20px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 8px 20px #0001;
+}
+
+.petBig{
+    font-size:70px;
+}
+
+.petCard h3{
+    color:#ad5c78;
+    margin:8px;
+}
+
+.petCard p{
+    font-size:12px;
+    margin-bottom:10px;
+}
+
+/* =========================
+   RECIPES
+========================= */
+
+.recipeGrid{
+    padding:30px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.recipeCard{
+    background:white;
+    padding:18px;
+    border-radius:22px;
+    text-align:center;
+    box-shadow:0 7px 17px #0001;
+}
+
+.recipeCard .icon{
+    font-size:45px;
+}
+
+.recipeCard h3{
+    color:#ad5c78;
+    margin:7px;
+}
+
+.recipeCard p{
+    font-size:13px;
+}
+
+/* =========================
+   SETTINGS
+========================= */
+
+.settings{
+    max-width:600px;
+    margin:auto;
+    padding:30px;
+}
+
+.setting{
+    background:white;
+    margin:10px 0;
+    padding:18px;
+    border-radius:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* =========================
+   POPUPS
+========================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:#38262d88;
+    z-index:500;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.popup{
+    width:min(500px,92%);
+    background:#fffaf6;
+    border-radius:30px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 25px 70px #0005;
+}
+
+.popupIcon{
+    font-size:80px;
+    margin:10px;
+}
+
+.popup h2{
+    color:#ad5876;
+    margin-bottom:10px;
+}
+
+.popupButton{
+    width:100%;
+    padding:13px;
+    margin-top:12px;
+    border-radius:22px;
+    background:#df86a5;
+    color:white;
+    font-weight:bold;
+}
+
+.cancelButton{
+    background:#eadfe0;
+    color:#805c62;
+}
+
+/* =========================
+   HEARTS
+========================= */
+
+.heart{
+    position:fixed;
+    z-index:1000;
+    pointer-events:none;
+    font-size:25px;
+    animation:heartUp 1.2s forwards;
+}
+
+@keyframes heartUp{
+    to{
+        opacity:0;
+        transform:translateY(-100px) scale(1.4);
+    }
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:fixed;
+    top:18%;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:900;
+    background:#fffaf6;
+    color:#ad5876;
+    padding:13px 22px;
+    border-radius:25px;
+    box-shadow:0 10px 30px #0003;
+    font-weight:bold;
+    opacity:0;
+    pointer-events:none;
+}
+
+.toast.show{
+    animation:toast 1.8s forwards;
+}
+
+@keyframes toast{
+    0%{opacity:0;transform:translate(-50%,20px)}
+    20%,75%{opacity:1;transform:translate(-50%,0)}
+    100%{opacity:0}
+}
+
+/* =========================
+   RAIN
+========================= */
+
+#rain{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:450;
+    display:none;
+}
+
+body.rainy #rain{
+    display:block;
+}
+
+.drop{
+    position:absolute;
+    top:-30px;
+    width:2px;
+    height:18px;
+    background:#82b8d0;
+    opacity:.6;
+    animation:rainFall 1s linear infinite;
+}
+
+@keyframes rainFall{
+    to{transform:translateY(110vh)}
+}
+
+/* =========================
+   NIGHT
+========================= */
+
+body.night .background{
+    background:
+        linear-gradient(135deg,#292941,#555575);
+}
+
+body.night .room{
+    filter:brightness(.78);
+}
+
+body.night .window{
+    background:linear-gradient(#292942,#62627c);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:850px){
+
+    .roomGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .shopGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .petGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .recipeGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .window{
+        width:220px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .titleCard h1{
+        font-size:30px;
+    }
+
+    .logoBig{
+        font-size:60px;
+    }
+
+    .roomGrid,
+    .shopGrid,
+    .petGrid,
+    .recipeGrid{
+        grid-template-columns:1fr;
+    }
+
+    .cafeFloor{
+        height:550px;
+    }
+
+    .carpet{
+        width:390px;
+        height:200px;
+    }
+
+    .sofa{
+        width:240px;
+    }
+
+    .counter{
+        width:280px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div id="rain"></div>
+
+
+<!-- =====================================================
+     START SCREEN
+===================================================== -->
+
+<section id="startScreen">
+
+    <div class="titleCard">
+
+        <div class="logoBig">
+            ☕🌸
+        </div>
+
+        <h1>
+            Luna's Cozy Café
+        </h1>
+
+        <p>
+            A tiny café full of warm drinks,
+            sleepy pets, sweet treats and cozy moments.
+        </p>
+
+        <div class="startButtons">
+
+            <button
+                class="menuButton"
+                onclick="startGame()">
+
+                🌸 START GAME
+
+            </button>
+
+            <button
+                class="menuButton smallButton"
+                onclick="loadGame();startGame()">
+
+                💾 CONTINUE
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     GAME
+===================================================== -->
+
+<section id="game" class="hidden">
+
+    <header class="topbar">
+
+        <div class="brand">
+            ☕ Luna's Café
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                🪙 <span id="coins">100</span>
+            </div>
+
+            <div class="stat">
+                ⭐ <span id="stars">0</span>
+            </div>
+
+            <div class="stat">
+                🔥 <span id="combo">0</span>
+            </div>
+
+            <div class="stat">
+                🏆 Lv.<span id="level">1</span>
+            </div>
+
+        </div>
+
+    </header>
+
+    <div id="levelBar">
+        <div id="xpBar"></div>
+    </div>
+
+
+    <!-- NAV -->
+
+    <nav class="nav">
+
+        <button onclick="showPage('cafe')">
+            ☕ Café
+        </button>
+
+        <button onclick="showPage('decorate')">
+            🪑 Decorate
+        </button>
+
+        <button onclick="showPage('pets')">
+            🐾 Pets
+        </button>
+
+        <button onclick="showPage('recipes')">
+            📖 Recipes
+        </button>
+
+        <button onclick="showPage('rooms')">
+            🏠 Rooms
+        </button>
+
+        <button onclick="showPage('settings')">
+            ⚙️ Settings
+        </button>
+
+    </nav>
+
+
+    <!-- =================================================
+         CAFE PAGE
+    ================================================= -->
+
+    <main id="cafePage" class="room">
+
+        <div class="roomHeader">
+            ♡ Welcome to Luna's Cozy Café ♡
+        </div>
+
+        <div class="cafeFloor">
+
+            <div class="wall">
+
+                <div class="clock">
+                    🕰️
+                </div>
+
+                <div class="wallPlant left">
+                    🪴
+                </div>
+
+                <div class="wallPlant right">
+                    🌿
+                </div>
+
+                <div class="window">
+                    🌳 ☁️ 🌸
+                </div>
+
+                <div class="painting">
+                    🌷
+                </div>
+
+            </div>
+
+
+            <div class="carpet"></div>
+
+
+            <div class="plant one">
+                🪴
+            </div>
+
+            <div class="plant two">
+                🌿
+            </div>
+
+
+            <!-- TABLES -->
+
+            <div class="table t1">
+
+                <div class="tableContent">
+                    ☕🌸
+                </div>
+
+            </div>
+
+            <div class="table t2">
+
+                <div class="tableContent">
+                    🍰☕
+                </div>
+
+            </div>
+
+            <div class="table t3">
+
+                <div class="tableContent">
+                    🫖🌷
+                </div>
+
+            </div>
+
+
+            <!-- CHAIRS -->
+
+            <div class="chair c1"></div>
+            <div class="chair c2"></div>
+            <div class="chair c3"></div>
+            <div class="chair c4"></div>
+            <div class="chair c5"></div>
+            <div class="chair c6"></div>
+
+
+            <!-- SOFA -->
+
+            <div class="sofa"></div>
+
+
+            <!-- CUSTOMERS -->
+
+            <div class="customer one">
+
+                👩🏻‍🦰
+
+                <small>
+                    ☕ so cozy
+                </small>
+
+            </div>
+
+            <div class="customer two">
+
+                👨🏻
+
+                <small>
+                    🍰 yummy!
+                </small>
+
+            </div>
+
+            <div class="customer three">
+
+                👩🏻‍💻
+
+                <small>
+                    🍵 work time
+                </small>
+
+            </div>
+
+
+            <!-- PETS -->
+
+            <div
+                class="pet cat"
+                onclick="petClick(event,'🐱')">
+
+                🐱
+
+            </div>
+
+            <div
+                class="pet dog"
+                onclick="petClick(event,'🐶')">
+
+                🐶
+
+            </div>
+
+            <div
+                class="pet bunny"
+                onclick="petClick(event,'🐰')">
+
+                🐰
+
+            </div>
+
+
+            <!-- COUNTER -->
+
+            <div class="counter">
+                ☕ 🍰 🧁 🍪 🫖
+            </div>
+
+        </div>
+
+
+        <!-- ORDER BUTTON -->
+
+        <div style="
+            padding:25px;
+            text-align:center;
+            background:#fff8ef;">
+
+            <button
+                class="menuButton"
+                style="max-width:400px;width:100%;"
+                onclick="newOrder()">
+
+                💌 Serve a Customer
+
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- =================================================
+         DECORATE PAGE
+    ================================================= -->
+
+    <main id="decoratePage" class="room hidden">
+
+        <div class="roomHeader">
+            🪑 Café Decoration Shop
+        </div>
+
+        <div class="shopGrid">
+
+            <div class="shopCard">
+
+                <div class="icon">🌸</div>
+
+                <h3>Flower Pot</h3>
+
+                <p>
+                    Make the café prettier.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="buyDecor('flowers',50)">
+
+                    🪙 50
+
+                </button>
+
+            </div>
+
+
+            <div class="shopCard">
+
+                <div class="icon">💡</div>
+
+                <h3>Warm Lamp</h3>
+
+                <p>
+                    Cozy lighting.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="buyDecor('lamp',80)">
+
+                    🪙 80
+
+                </button>
+
+            </div>
+
+
+            <div class="shopCard">
+
+                <div class="icon">🛋️</div>
+
+                <h3>Pink Sofa</h3>
+
+                <p>
+                    A comfy place to relax.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="buyDecor('sofa',120)">
+
+                    🪙 120
+
+                </button>
+
+            </div>
+
+
+            <div class="shopCard">
+
+                <div class="icon">🪴</div>
+
+                <h3>Big Plant</h3>
+
+                <p>
+                    Fresh café atmosphere.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="buyDecor('plant',100)">
+
+                    🪙 100
+
+                </button>
+
+            </div>
+
+
+            <div class="shopCard">
+
+                <div class="icon">🎀</div>
+
+                <h3>Pink Curtains</h3>
+
+                <p>
+                    Cute window decoration.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="buyDecor('curtain',150)">
+
+                    🪙 150
+
+                </button>
+
+            </div>
+
+
+            <div class="shopCard">
+
+                <div class="icon">🧸</div>
+
+                <h3>Teddy Corner</h3>
+
+                <p>
+                    A tiny cute corner.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="buyDecor('teddy',200)">
+
+                    🪙 200
+
+                </button>
+
+            </div>
+
+
+            <div class="shopCard">
+
+                <div class="icon">🎵</div>
+
+                <h3>Music Player</h3>
+
+                <p>
+                    Adds cozy café sounds.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="buyDecor('music',250)">
+
+                    🪙 250
+
+                </button>
+
+            </div>
+
+
+            <div class="shopCard">
+
+                <div class="icon">✨</div>
+
+                <h3>Fairy Lights</h3>
+
+                <p>
+                    Sparkly evening lights.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="buyDecor('lights',300)">
+
+                    🪙 300
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =================================================
+         PETS PAGE
+    ================================================= -->
+
+    <main id="petsPage" class="room hidden">
+
+        <div class="roomHeader">
+            🐾 Luna's Pet Corner
+        </div>
+
+        <div class="petGrid">
+
+            <div class="petCard">
+
+                <div class="petBig">
+                    🐱
+                </div>
+
+                <h3>Mochi</h3>
+
+                <p>
+                    A sleepy café cat.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="adoptPet('Mochi',30)">
+
+                    🪙 30
+
+                </button>
+
+            </div>
+
+
+            <div class="petCard">
+
+                <div class="petBig">
+                    🐶
+                </div>
+
+                <h3>Coco</h3>
+
+                <p>
+                    Loves customers.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="adoptPet('Coco',60)">
+
+                    🪙 60
+
+                </button>
+
+            </div>
+
+
+            <div class="petCard">
+
+                <div class="petBig">
+                    🐰
+                </div>
+
+                <h3>Berry</h3>
+
+                <p>
+                    A tiny fluffy bunny.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="adoptPet('Berry',100)">
+
+                    🪙 100
+
+                </button>
+
+            </div>
+
+
+            <div class="petCard">
+
+                <div class="petBig">
+                    🐻
+                </div>
+
+                <h3>Honey</h3>
+
+                <p>
+                    Loves warm tea.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="adoptPet('Honey',180)">
+
+                    🪙 180
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =================================================
+         RECIPES
+    ================================================= -->
+
+    <main id="recipesPage" class="room hidden">
+
+        <div class="roomHeader">
+            📖 Luna's Recipe Book
+        </div>
+
+        <div
+            class="recipeGrid"
+            id="recipeGrid">
+        </div>
+
+    </main>
+
+
+    <!-- =================================================
+         ROOMS
+    ================================================= -->
+
+    <main id="roomsPage" class="room hidden">
+
+        <div class="roomHeader">
+            🏠 Explore New Café Rooms
+        </div>
+
+        <div class="roomGrid">
+
+            <div class="roomCard">
+
+                <div class="roomIcon">
+                    ☕
+                </div>
+
+                <h3>Main Café</h3>
+
+                <p>
+                    Your first cozy café.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="showPage('cafe')">
+
+                    ENTER
+
+                </button>
+
+            </div>
+
+
+            <div class="roomCard">
+
+                <div class="roomIcon">
+                    🌿
+                </div>
+
+                <h3>Garden Café</h3>
+
+                <p>
+                    Unlock at Level 3.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="unlockRoom(3,'Garden Café')">
+
+                    🪙 300
+
+                </button>
+
+            </div>
+
+
+            <div class="roomCard">
+
+                <div class="roomIcon">
+                    🌙
+                </div>
+
+                <h3>Night Café</h3>
+
+                <p>
+                    Unlock at Level 5.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="unlockRoom(5,'Night Café')">
+
+                    🪙 500
+
+                </button>
+
+            </div>
+
+
+            <div class="roomCard">
+
+                <div class="roomIcon">
+                    🌸
+                </div>
+
+                <h3>Flower Room</h3>
+
+                <p>
+                    Unlock at Level 7.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="unlockRoom(7,'Flower Room')">
+
+                    🪙 800
+
+                </button>
+
+            </div>
+
+
+            <div class="roomCard">
+
+                <div class="roomIcon">
+                    🐾
+                </div>
+
+                <h3>Pet Café</h3>
+
+                <p>
+                    Unlock at Level 10.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="unlockRoom(10,'Pet Café')">
+
+                    🪙 1200
+
+                </button>
+
+            </div>
+
+
+            <div class="roomCard">
+
+                <div class="roomIcon">
+                    🌌
+                </div>
+
+                <h3>Dream Café</h3>
+
+                <p>
+                    Unlock at Level 15.
+                </p>
+
+                <button
+                    class="buyButton"
+                    onclick="unlockRoom(15,'Dream Café')">
+
+                    🪙 2000
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =================================================
+         SETTINGS
+    ================================================= -->
+
+    <main id="settingsPage" class="room hidden">
+
+        <div class="roomHeader">
+            ⚙️ Café Settings
+        </div>
+
+        <div class="settings">
+
+            <div class="setting">
+
+                <span>
+                    🌙 Night Mode
+                </span>
+
+                <button
+                    class="buyButton"
+                    onclick="toggleNight()">
+
+                    Toggle
+
+                </button>
+
+            </div>
+
+
+            <div class="setting">
+
+                <span>
+                    🌧️ Rain
+                </span>
+
+                <button
+                    class="buyButton"
+                    onclick="toggleRain()">
+
+                    Toggle
+
+                </button>
+
+            </div>
+
+
+            <div class="setting">
+
+                <span>
+                    🔊 Cozy Sounds
+                </span>
+
+                <button
+                    class="buyButton"
+                    onclick="toggleSound()">
+
+                    Toggle
+
+                </button>
+
+            </div>
+
+
+            <div class="setting">
+
+                <span>
+                    💾 Save Game
+                </span>
+
+                <button
+                    class="buyButton"
+                    onclick="saveGame()">
+
+                    SAVE
+
+                </button>
+
+            </div>
+
+
+            <div class="setting">
+
+                <span>
+                    🔄 Reset Game
+                </span>
+
+                <button
+                    class="buyButton"
+                    onclick="resetGame()">
+
+                    RESET
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</section>
+
+
+<!-- =====================================================
+     ORDER POPUP
+===================================================== -->
+
+<div
+    id="orderPopup"
+    class="overlay hidden">
+
+    <div class="popup">
+
+        <div
+            class="popupIcon"
+            id="orderIcon">
+            ☕
+        </div>
+
+        <h2>
+            💌 Customer Order
+        </h2>
+
+        <p id="orderText">
+            I'd like something yummy!
+        </p>
+
+        <div
+            style="
+            margin-top:15px;
+            height:14px;
+            background:#eadcdf;
+            border-radius:20px;
+            overflow:hidden;">
+
+            <div
+                id="patienceBar"
+                style="
+                height:100%;
+                width:100%;
+                background:#df86a5;">
+            </div>
+
+        </div>
+
+        <button
+            class="popupButton"
+            onclick="cookOrder()">
+
+            👩‍🍳 MAKE ORDER
+
+        </button>
+
+        <button
+            class="popupButton cancelButton"
+            onclick="closeOrder()">
+
+            Cancel
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     COOKING POPUP
+===================================================== -->
+
+<div
+    id="cookPopup"
+    class="overlay hidden">
+
+    <div class="popup">
+
+        <div
+            class="popupIcon"
+            id="cookIcon">
+            ☕
+        </div>
+
+        <h2>
+            👩‍🍳 Cooking!
+        </h2>
+
+        <p>
+            Tap the button until the order is ready!
+        </p>
+
+        <div
+            style="
+            margin-top:18px;
+            height:22px;
+            background:#eadcdf;
+            border-radius:20px;
+            overflow:hidden;">
+
+            <div
+                id="cookBar"
+                style="
+                height:100%;
+                width:0%;
+                background:linear-gradient(90deg,#8ed8ed,#ffe27d,#ef8b91);">
+            </div>
+
+        </div>
+
+        <button
+            class="popupButton"
+            onclick="cookTap()">
+
+            🔥 COOK!
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<div
+    id="toast"
+    class="toast">
+</div>
+
+
+<script>
+
+/* =====================================================
+   GAME DATA
+===================================================== */
+
+let game={
+    coins:100,
+    stars:0,
+    combo:0,
+    level:1,
+    xp:0,
+    pets:[],
+    decorations:[],
+    rooms:[],
+    night:false,
+    rain:false,
+    sound:false
+};
+
+let currentOrder=null;
+let patience=100;
+let patienceTimer=null;
+let cookProgress=0;
+
+
+/* =====================================================
+   RECIPES
+===================================================== */
+
+const recipes=[
+
+    ["☕","Coffee",5,1],
+    ["🍪","Cookie",7,1],
+    ["🧁","Cupcake",9,1],
+    ["🍰","Cake",12,2],
+    ["🍵","Matcha",14,2],
+    ["🥐","Croissant",17,3],
+    ["🍓","Strawberry Cake",20,4],
+    ["🍩","Donut",23,5],
+    ["🍬","Macaron",27,6],
+    ["🫖","Berry Tea",30,7],
+    ["🥞","Pancakes",35,9],
+    ["🍨","Ice Cream",40,12]
+
+];
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function startGame(){
+
+    document
+        .getElementById("startScreen")
+        .classList.add("hidden");
+
+    document
+        .getElementById("game")
+        .classList.remove("hidden");
+
+    updateUI();
+
+    showPage("cafe");
+
+}
+
+
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+function showPage(page){
+
+    const pages=[
+        "cafe",
+        "decorate",
+        "pets",
+        "recipes",
+        "rooms",
+        "settings"
+    ];
+
+    pages.forEach(p=>{
+
+        document
+            .getElementById(p+"Page")
+            .classList.toggle(
+                "hidden",
+                p!==page
+            );
+
+    });
+
+    if(page==="recipes"){
+        renderRecipes();
+    }
+
+}
+
+
+/* =====================================================
+   UI
+===================================================== */
+
+function updateUI(){
+
+    document.getElementById("coins")
+        .textContent=game.coins;
+
+    document.getElementById("stars")
+        .textContent=game.stars;
+
+    document.getElementById("combo")
+        .textContent=game.combo;
+
+    document.getElementById("level")
+        .textContent=game.level;
+
+    let required=game.level*100;
+
+    document.getElementById("xpBar")
+        .style.width=
+        Math.min(
+            game.xp/required*100,
+            100
+        )+"%";
+
+    renderRecipes();
+
+}
+
+
+/* =====================================================
+   XP
+===================================================== */
+
+function addXP(amount){
+
+    game.xp+=amount;
+
+    while(
+        game.xp >= game.level*100
+    ){
+
+        game.xp -= game.level*100;
+
+        game.level++;
+
+        game.coins+=50;
+
+        game.stars+=10;
+
+        toast(
+            "🎉 LEVEL UP! Café Level "+
+            game.level+
+            "!"
+        );
+
+    }
+
+    updateUI();
+
+}
+
+
+/* =====================================================
+   RECIPES
+===================================================== */
+
+function renderRecipes(){
+
+    const box=
+        document.getElementById(
+            "recipeGrid"
+        );
+
+    if(!box)return;
+
+    box.innerHTML="";
+
+    recipes.forEach(r=>{
+
+        let unlocked=
+            game.level>=r[3];
+
+        let card=
+            document.createElement("div");
+
+        card.className="recipeCard";
+
+        card.innerHTML=`
+
+            <div class="icon">
+                ${unlocked?r[0]:"🔒"}
+            </div>
+
+            <h3>
+                ${unlocked?r[1]:"Locked Recipe"}
+            </h3>
+
+            <p>
+                ${unlocked?
+                    "Earn 🪙 "+r[2]:
+                    "Unlock at Level "+r[3]}
+            </p>
+
+        `;
+
+        box.appendChild(card);
+
+    });
+
+}
+
+
+/* =====================================================
+   CUSTOMER ORDER
+===================================================== */
+
+function newOrder(){
+
+    if(currentOrder){
+
+        toast(
+            "💌 A customer is already waiting!"
+        );
+
+        return;
+
+    }
+
+    let available=
+        recipes.filter(
+            r=>game.level>=r[3]
+        );
+
+    let chosen=
+        available[
+            Math.floor(
+                Math.random()*
+                available.length
+            )
+        ];
+
+    currentOrder=chosen;
+
+    patience=100;
+
+    document
+        .getElementById("orderIcon")
+        .textContent=chosen[0];
+
+    document
+        .getElementById("orderText")
+        .textContent=
+        "I'd like a "+
+        chosen[1]+
+        " please! ♡";
+
+    document
+        .getElementById("orderPopup")
+        .classList.remove("hidden");
+
+    startPatience();
+
+}
+
+
+/* =====================================================
+   PATIENCE
+===================================================== */
+
+function startPatience(){
+
+    clearInterval(patienceTimer);
+
+    patienceTimer=
+        setInterval(()=>{
+
+            if(!currentOrder){
+
+                clearInterval(
+                    patienceTimer
+                );
+
+                return;
+
+            }
+
+            patience-=.5;
+
+            document
+                .getElementById("patienceBar")
+                .style.width=
+                Math.max(
+                    patience,
+                    0
+                )+"%";
+
+            if(patience<=0){
+
+                clearInterval(
+                    patienceTimer
+                );
+
+                currentOrder=null;
+
+                game.combo=0;
+
+                document
+                    .getElementById("orderPopup")
+                    .classList.add("hidden");
+
+                toast(
+                    "💔 The customer left..."
+                );
+
+                updateUI();
+
+            }
+
+        },100);
+
+}
+
+
+/* =====================================================
+   COOK
+===================================================== */
+
+function cookOrder(){
+
+    if(!currentOrder)return;
+
+    clearInterval(patienceTimer);
+
+    document
+        .getElementById("orderPopup")
+        .classList.add("hidden");
+
+    document
+        .getElementById("cookPopup")
+        .classList.remove("hidden");
+
+    document
+        .getElementById("cookIcon")
+        .textContent=currentOrder[0];
+
+    cookProgress=0;
+
+    document
+        .getElementById("cookBar")
+        .style.width="0%";
+
+}
+
+
+function cookTap(){
+
+    cookProgress+=
+        Math.random()*20+18;
+
+    document
+        .getElementById("cookBar")
+        .style.width=
+        Math.min(
+            cookProgress,
+            100
+        )+"%";
+
+    if(cookProgress>=100){
+
+        finishOrder();
+
+    }
+
+}
+
+
+/* =====================================================
+   FINISH ORDER
+===================================================== */
+
+function finishOrder(){
+
+    document
+        .getElementById("cookPopup")
+        .classList.add("hidden");
+
+    let reward=currentOrder[2];
+
+    reward+=
+        Math.min(
+            game.combo*2,
+            20
+        );
+
+    if(patience>70){
+        reward+=3;
+    }
+
+    game.coins+=reward;
+
+    game.stars++;
+
+    game.combo++;
+
+    addXP(20);
+
+    heart(
+        window.innerWidth/2,
+        window.innerHeight/2
+    );
+
+    toast(
+        "☕ Perfect order! +"+
+        reward+
+        " coins!"
+    );
+
+    currentOrder=null;
+
+    updateUI();
+
+}
+
+
+/* =====================================================
+   CLOSE ORDER
+===================================================== */
+
+function closeOrder(){
+
+    clearInterval(patienceTimer);
+
+    currentOrder=null;
+
+    game.combo=0;
+
+    document
+        .getElementById("orderPopup")
+        .classList.add("hidden");
+
+}
+
+
+/* =====================================================
+   PET CLICK
+===================================================== */
+
+function petClick(event,pet){
+
+    game.coins+=3;
+
+    game.stars++;
+
+    heart(
+        event.clientX,
+        event.clientY
+    );
+
+    toast(
+        pet+
+        " is happy! +3 coins 🐾"
+    );
+
+    updateUI();
+
+}
+
+
+/* =====================================================
+   BUY DECOR
+===================================================== */
+
+function buyDecor(name,cost){
+
+    if(
+        game.decorations.includes(name)
+    ){
+
+        toast(
+            "✨ You already own this!"
+        );
+
+        return;
+
+    }
+
+    if(game.coins<cost){
+
+        toast(
+            "😢 You need more coins."
+        );
+
+        return;
+
+    }
+
+    game.coins-=cost;
+
+    game.decorations.push(name);
+
+    game.stars+=3;
+
+    toast(
+        "🎀 Decoration added!"
+    );
+
+    updateUI();
+
+}
+
+
+/* =====================================================
+   PET ADOPTION
+===================================================== */
+
+function adoptPet(name,cost){
+
+    if(
+        game.pets.includes(name)
+    ){
+
+        toast(
+            "🐾 You already adopted "+name+"!"
+        );
+
+        return;
+
+    }
+
+    if(game.coins<cost){
+
+        toast(
+            "😢 Not enough coins!"
+        );
+
+        return;
+
+    }
+
+    game.coins-=cost;
+
+    game.pets.push(name);
+
+    game.stars+=5;
+
+    toast(
+        "🐾 Welcome home, "+name+"!"
+    );
+
+    updateUI();
+
+}
+
+
+/* =====================================================
+   ROOMS
+===================================================== */
+
+function unlockRoom(level,cost){
+
+    if(
+        game.rooms.includes(level)
+    ){
+
+        toast(
+            "🏠 Already unlocked!"
+        );
+
+        return;
+
+    }
+
+    if(game.level<level){
+
+        toast(
+            "🔒 Reach Level "+
+            level+
+            " first!"
+        );
+
+        return;
+
+    }
+
+    if(game.coins<cost){
+
+        toast(
+            "😢 You need more coins."
+        );
+
+        return;
+
+    }
+
+    game.coins-=cost;
+
+    game.rooms.push(level);
+
+    game.stars+=20;
+
+    toast(
+        "🏠 New room unlocked!"
+    );
+
+    updateUI();
+
+}
+
+
+/* =====================================================
+   NIGHT
+===================================================== */
+
+function toggleNight(){
+
+    game.night=!game.night;
+
+    document.body.classList.toggle(
+        "night",
+        game.night
+    );
+
+    toast(
+        game.night?
+        "🌙 Night mode":
+        "☀️ Day mode"
+    );
+
+}
+
+
+/* =====================================================
+   RAIN
+===================================================== */
+
+function toggleRain(){
+
+    game.rain=!game.rain;
+
+    document.body.classList.toggle(
+        "rainy",
+        game.rain
+    );
+
+    const rain=
+        document.getElementById("rain");
+
+    rain.innerHTML="";
+
+    if(game.rain){
+
+        for(
+            let i=0;
+            i<100;
+            i++
+        ){
+
+            let d=
+                document.createElement("div");
+
+            d.className="drop";
+
+            d.style.left=
+                Math.random()*100+
+                "%";
+
+            d.style.animationDelay=
+                Math.random()*2+
+                "s";
+
+            d.style.animationDuration=
+                .5+
+                Math.random()*.7+
+                "s";
+
+            rain.appendChild(d);
+
+        }
+
+        toast(
+            "🌧️ Rainy café day"
+        );
+
+    }else{
+
+        toast(
+            "☀️ The sky cleared!"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SOUND
+===================================================== */
+
+let audio=null;
+
+function tone(freq=500,duration=.12){
+
+    if(!game.sound)return;
+
+    if(!audio){
+
+        audio=
+            new(
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+
+    }
+
+    let osc=
+        audio.createOscillator();
+
+    let gain=
+        audio.createGain();
+
+    osc.frequency.value=freq;
+
+    gain.gain.value=.035;
+
+    osc.connect(gain);
+
+    gain.connect(audio.destination);
+
+    osc.start();
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        audio.currentTime+duration
+    );
+
+    osc.stop(
+        audio.currentTime+duration
+    );
+
+}
+
+
+function toggleSound(){
+
+    game.sound=!game.sound;
+
+    toast(
+        game.sound?
+        "🔊 Cozy sounds ON":
+        "🔇 Sounds OFF"
+    );
+
+    if(game.sound){
+
+        tone(700,.15);
+
+    }
+
+}
+
+
+/* =====================================================
+   HEART EFFECT
+===================================================== */
+
+function heart(x,y){
+
+    let h=
+        document.createElement("div");
+
+    h.className="heart";
+
+    h.textContent=
+        ["💗","💕","💖","✨","♡"]
+        [
+            Math.floor(
+                Math.random()*5
+            )
+        ];
+
+    h.style.left=x+"px";
+
+    h.style.top=y+"px";
+
+    document.body.appendChild(h);
+
+    setTimeout(()=>{
+        h.remove();
+    },1200);
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function toast(text){
+
+    const t=
+        document.getElementById("toast");
+
+    t.textContent=text;
+
+    t.classList.remove("show");
+
+    void t.offsetWidth;
+
+    t.classList.add("show");
+
+}
+
+
+/* =====================================================
+   SAVE
+===================================================== */
+
+function saveGame(){
+
+    localStorage.setItem(
+        "LunaCozyCafe",
+        JSON.stringify(game)
+    );
+
+    toast(
+        "💾 Café saved!"
+    );
+
+}
+
+
+/* =====================================================
+   LOAD
+===================================================== */
+
+function loadGame(){
+
+    let saved=
+        localStorage.getItem(
+            "LunaCozyCafe"
+        );
+
+    if(!saved){
+
+        startGame();
+
+        return;
+
+    }
+
+    try{
+
+        game=
+            JSON.parse(saved);
+
+        document.body.classList.toggle(
+            "night",
+            game.night
+        );
+
+        document.body.classList.toggle(
+            "rainy",
+            game.rain
+        );
+
+    }catch(e){
+
+        console.log(e);
+
+    }
+
+    updateUI();
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetGame(){
+
+    let yes=
+        confirm(
+            "Reset your entire café?"
+        );
+
+    if(!yes)return;
+
+    localStorage.removeItem(
+        "LunaCozyCafe"
+    );
+
+    location.reload();
+
+}
+
+
+/* =====================================================
+   AUTO SAVE
+===================================================== */
+
+setInterval(()=>{
+
+    if(
+        !document
+        .getElementById("game")
+        .classList.contains("hidden")
+    ){
+
+        localStorage.setItem(
+            "LunaCozyCafe",
+            JSON.stringify(game)
+        );
+
+    }
+
+},10000);
+
+
+/* =====================================================
+   RANDOM CUSTOMERS
+===================================================== */
+
+setInterval(()=>{
+
+    if(
+        !currentOrder &&
+        !document
+        .getElementById("cafePage")
+        .classList.contains("hidden")
+    ){
+
+        if(Math.random()>.45){
+
+            newOrder();
+
+        }
+
+    }
+
+},12000);
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+loadGame();
+
+</script>
+
+</body>
+</html>
